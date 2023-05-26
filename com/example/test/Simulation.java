@@ -1,5 +1,6 @@
 package com.example.test;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 // this code is generated under the help of github copilot chat.
@@ -31,11 +32,12 @@ public class Simulation {
         double[] skillCapability = new double[peopleCount];
         double[] propertyValue = new double[peopleCount];
 
-        ArrayList<EventItem>[] arrayOfEventList = new ArrayList[peopleCount];
+        List<ArrayList<EventItem>> arrayOfEventList = new ArrayList<ArrayList<EventItem>>(peopleCount);
 
-        for (int i = 0; i < arrayOfEventList.length; i ++){
-            arrayOfEventList[i] = new ArrayList<EventItem>();
+        for (int i = 0; i < peopleCount; i ++){
+            arrayOfEventList.add(new ArrayList<EventItem>());
         }
+        // <ArrayList<EventItem>>[] arrayOfEventList = new <ArrayList<EventItem>>[peopleCount];
         //print a prompt to inform user that program starts
         System.out.println("Program starts");
         // Initialize skillCapability and propertyValue arrays
@@ -68,13 +70,13 @@ public class Simulation {
                     if (isLuckyEvent) {
                         if (random.nextDouble() < skillCapability[i]) {
                             propertyValue[i] *= 2;
-                            arrayOfEventList[i].add(new EventItem("G", age));
+                            arrayOfEventList.get(i).add(new EventItem("G", age));
                         } else {
-                            arrayOfEventList[i].add(new EventItem("M", age));
+                            arrayOfEventList.get(i).add(new EventItem("M", age));
                         }
                     } else if (isUnluckyEvent) {
                         propertyValue[i] /= 2;
-                        arrayOfEventList[i].add(new EventItem("B", age));
+                        arrayOfEventList.get(i).add(new EventItem("B", age));
                     }
                 }
             }
@@ -91,7 +93,7 @@ public class Simulation {
             // Print event list
             System.out.println("Event list for Person " + i +" :");
             int luckyEventCatchedCount=0,unluckyEventCount=0,luckyEventMissed = 0;
-            for (EventItem event : arrayOfEventList[i] ) {
+            for (EventItem event : arrayOfEventList.get(i) ) {
                 if (event.getEventType().equals("G"))
                     luckyEventCatchedCount+=1;
                 else if(event.getEventType().equals("B"))
@@ -125,7 +127,7 @@ public class Simulation {
         System.out.println("Event list:");
         // calculate total event count, lucky event catched count, lucky event missed count and unlucky event count for the richest person
         int luckyEventCatchedCount=0,unluckyEventCount=0,luckyEventMissed = 0;
-        for (EventItem event : arrayOfEventList[richestPersonIndex]) {
+        for (EventItem event : arrayOfEventList.get(richestPersonIndex)) {
             if (event.getEventType().equals("G"))
                 luckyEventCatchedCount+=1;
             else if(event.getEventType().equals("B"))
@@ -146,7 +148,7 @@ public class Simulation {
         System.out.println("Event list:");
         // calculate total event count, lucky event catched count, lucky event missed count and unlucky event count for the poorest person
         luckyEventCatchedCount=0;unluckyEventCount=0;luckyEventMissed = 0;
-        for (EventItem event : arrayOfEventList[poorestPersonIndex]) {
+        for (EventItem event : arrayOfEventList.get(poorestPersonIndex)) {
             if (event.getEventType().equals("G"))
                 luckyEventCatchedCount+=1;
             else if(event.getEventType().equals("B"))
